@@ -23,11 +23,24 @@ const PlainButton = ({
 }: PlainButtonProps) => {
   return (
     <button
-      className={`${variantStyles[variant]} px-8 py-2 rounded-md font-semibold text-lg flex items-center gap-2`}
+      className={`
+        relative
+        ${variantStyles[variant]}
+        px-8 py-2
+        rounded-md font-semibold text-lg
+        flex items-center justify-center
+      `}
       onClick={onClick}
     >
-      <span>{label ?? "Button"}</span>
-      {icon && <span className="text-xl">{icon}</span>}
+      {/* CENTERED TEXT */}
+      <span className="text-center">{label ?? "Button"}</span>
+
+      {/* ICON (RIGHT SIDE, DOESN’T AFFECT CENTER) */}
+      {icon && (
+        <span className="absolute right-4 text-xl flex items-center">
+          {icon}
+        </span>
+      )}
     </button>
   );
 };
