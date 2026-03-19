@@ -25,12 +25,30 @@ function NavBar() {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
-  return (
-    <nav className="flex items-center justify-between px-8 py-4 bg-main border-b border-divider shadow-sm transition-colors duration-500">
-      <div className="text-xl font-bold text-primary tracking-widest uppercase">
-        <Link to="/">🔮 Tarot Reader</Link>
-      </div>
+  const [scrolled, setScrolled] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`
+    sticky top-0 z-50
+    flex items-center justify-between px-8 py-4 
+    bg-main transition-all duration-300
+    ${scrolled ? "border-b border-divider shadow-sm" : "border-b border-transparent"}
+  `}
+    >
+      {" "}
+      <div className="text-xl font-bold text-primary tracking-widest uppercase">
+        <Link to="/">Kaimestry's Tarot</Link>
+      </div>
       <div className="flex items-center gap-8">
         {NAV_LINKS.map((link) => (
           <Link
