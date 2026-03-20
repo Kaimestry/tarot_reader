@@ -14,7 +14,6 @@ const variantStyles: Record<ButtonVariant, string> = {
   secondary: "bg-transparent text-primary border border-primary",
   text: "bg-transparent text-primary",
 };
-
 const PlainButton = ({
   label,
   onClick,
@@ -24,25 +23,16 @@ const PlainButton = ({
   return (
     <button
       className={`
-        relative
         ${variantStyles[variant]}
-        px-8 py-2
-        rounded-md font-semibold text-lg
-        flex items-center justify-center
+        px-6 py-2 rounded-md font-semibold text-lg
+        flex items-center justify-center gap-2 /* This centers the 'block' */
       `}
       onClick={onClick}
     >
-      {/* CENTERED TEXT */}
-      <span className="text-center">{label ?? "Button"}</span>
+      <span>{label ?? "Button"}</span>
 
-      {/* ICON (RIGHT SIDE, DOESN’T AFFECT CENTER) */}
-      {icon && (
-        <span className="absolute right-4 text-xl flex items-center">
-          {icon}
-        </span>
-      )}
+      {icon && <span className="flex items-center text-xl">{icon}</span>}
     </button>
   );
 };
-
 export default PlainButton;
