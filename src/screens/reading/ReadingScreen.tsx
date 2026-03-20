@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PhaseShuffle from "./PhaseShuffle";
 import PhaseSpread from "./PhaseSpread";
 import PhaseReading from "./PhaseReading";
 import PhaseNewReading from "./PhaseNewReading";
 
-// 1. Centralized Config for easy adjustments
 const READING_CONFIG = {
-  maxSelection: 3, // Change this to 1, 5, or 10 to update the whole app
-  deckSize: 14, // Total cards available in the spread
+  maxSelection: 3,
+  deckSize: 14,
 };
 
 export type Card = {
@@ -20,7 +19,8 @@ const TarotReader: React.FC = () => {
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [revealedCards, setRevealedCards] = useState<Card[]>([]);
 
-  // Use the config for deck generation
+  const [opacity, setOpacity] = useState(1); // 1 = visible, 0 = hidden
+
   const deck: Card[] = Array.from(
     { length: READING_CONFIG.deckSize },
     (_, i) => ({
@@ -29,41 +29,63 @@ const TarotReader: React.FC = () => {
     }),
   );
 
-  const nextPhase = () => setPhase((prev) => (prev === 4 ? 1 : prev + 1));
+  const handleNextPhase = () => {
+    setOpacity(0); // Trigger fade out
+
+    // Wait 500ms (matching the CSS duration) before swapping phase
+    setTimeout(() => {
+      setPhase((prev) => (prev === 4 ? 1 : prev + 1));
+      setOpacity(1); // Trigger fade in
+    }, 500);
+  };
 
   const resetReading = () => {
-    setSelectedCards([]);
-    setRevealedCards([]);
-    setPhase(1);
+    setOpacity(0);
+    setTimeout(() => {
+      setSelectedCards([]);
+      setRevealedCards([]);
+      setPhase(1);
+      setOpacity(1);
+    }, 500);
   };
 
   return (
     <div className="w-full min-h-screen bg-main text-main overflow-hidden">
-      {/* Phase 1: Shuffle */}
-      {phase === 1 && <PhaseShuffle onNext={nextPhase} />}
-      {/* Phase 2: Spread & Selection */}
-      {phase === 2 && (
-        <PhaseSpread
-          deck={deck}
-          selectedCards={selectedCards}
-          setSelectedCards={setSelectedCards}
-          maxSelection={READING_CONFIG.maxSelection} // Pass the dynamic value here
-          onNext={nextPhase}
-        />
-      )}
-      {/* Phase 3: The Reading/Reveal */}
-      {phase === 3 && (
-        <PhaseReading
-          selectedCards={selectedCards}
-          revealedCards={revealedCards}
-          setRevealedCards={setRevealedCards}
-          onNext={nextPhase}
-        />
-      )}
-      {/* Phase 4: Final Screen */}
-      {phase === 4 && (
-        <PhaseNewReading onReset={resetReading} selectedCards={selectedCards} />
-      )}
+      {/* Wrapper with dynamic opacity and transition.
+         'duration-500' matches the setTimeout above.
+      */}
+      <div
+        className={`transition-opacity duration-500 ease-in-out h-full w-full`}
+        style={{ opacity: opacity }}
+      >
+        {phase === 1 && <PhaseShuffle onNext={handleNextPhase} />}
+
+        {phase === 2 && (
+          <PhaseSpread
+            deck={deck}
+            selectedCards={selectedCards}
+            setSelectedCards={setSelectedCards}
+            maxSelection={READING_CONFIG.maxSelection}
+            onNext={handleNextPhase}
+          />
+        )}
+
+        {phase === 3 && (
+          <PhaseReading
+            selectedCards={selectedCards}
+            revealedCards={revealedCards}
+            setRevealedCards={setRevealedCards}
+            onNext={handleNextPhase}
+          />
+        )}
+
+        {phase === 4 && (
+          <PhaseNewReading
+            onReset={resetReading}
+            selectedCards={selectedCards}
+          />
+        )}
+      </div>
     </div>
   );
 };
