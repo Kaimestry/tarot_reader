@@ -22,7 +22,7 @@ const CardSpread: React.FC<CardSpreadProps> = ({
 
   return (
     <div className="flex flex-wrap justify-center gap-6 p-8 max-w-6xl">
-      {deck.map((card) => {
+      {deck.slice(0, 8).map((card) => {
         const isSelected = selectedCards.find((c) => c.id === card.id);
 
         return (
