@@ -113,7 +113,7 @@ const CardSpread: React.FC<CardSpreadProps> = ({
         const isSpreadingStage = animationStage === "spreading";
         const isInitialSpread =
           isSpreadingStage && !isDismissing && !forceSpread;
-        const isReturning = isDismissing;
+        const isReturning = isDismissing && !isSelected;
 
         return (
           <div
