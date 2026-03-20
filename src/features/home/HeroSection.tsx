@@ -6,8 +6,11 @@ import { MdDraw } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import CardSpin from "../../components/CardAnimation/CardSpin";
 import { BRAND_CONFIG } from "../../config/appConfig";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <GradientBackground className="relative overflow-hidden w-full min-h-[400px] pb-5">
       {/* CENTERED CONTENT */}
@@ -48,11 +51,13 @@ const HeroSection = () => {
               variant="primary"
               label="Start Reading"
               icon={<GiCardRandom />}
+              onClick={() => navigate("/reading")}
             />
             <PlainButton
               variant="secondary"
               label="Explore Cards"
               icon={<FaSearch />}
+              onClick={() => navigate("/library")}
             />
             <PlainButton
               variant="secondary"

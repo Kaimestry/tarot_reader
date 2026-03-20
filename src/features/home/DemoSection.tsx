@@ -2,8 +2,11 @@ import React from "react";
 import PlainButton from "../../components/buttons/PlainButton";
 import { GiCardRandom } from "react-icons/gi";
 import { BRAND_CONFIG } from "../../config/appConfig";
+import { useNavigate } from "react-router-dom";
 
 const DemoSection = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 pt-8 md:pt-16">
       {/* LEFT */}
@@ -30,6 +33,7 @@ const DemoSection = () => {
             variant="primary"
             label="Start Reading"
             icon={<GiCardRandom />}
+            onClick={() => navigate("/reading")}
           />
         </div>
       </section>

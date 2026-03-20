@@ -1,7 +1,11 @@
 import React from "react";
 import PlainButton from "../../components/buttons/PlainButton";
+import { useNavigate } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 
 const LibrarySection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-12 md:py-20">
       <div className="flex justify-center">
@@ -18,7 +22,12 @@ const LibrarySection = () => {
                 card, filter by category, and access clear, structured meanings
                 without the clutter.
               </p>
-              <PlainButton variant="secondary" label="View Cards" />
+              <PlainButton
+                variant="secondary"
+                label="Explore Cards"
+                icon={<FaSearch />}
+                onClick={() => navigate("/library")}
+              />{" "}
             </div>
           </div>
 
